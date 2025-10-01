@@ -1,44 +1,47 @@
 import streamlit as st
+import random
 
-st.title("🎈It's my app")
-st.write("안녕하세요!! 오늘은 10월1일 입니다.")
+# if "page" not in st.session_state:
+#     st.session_state.page = "home"
 
-st.info("success")
-st.success("만나서 반가워.나는 아카자!")
-st.image("https://ojsfile.ohmynews.com/STD_IMG_FILE/2025/0812/IE003508187_STD.jpg")
+# # 페이지 전환 함수
+# def switch_page(page_name):
+#     st.session_state.page = page_name
 
-with st.expander("ℹ️ 우리나라 지도"):
-    import pandas as pd
-    df = pd.DataFrame({"lat":[37.5],"lon":[127.8]})
-    st.map(df,zoom=14)
+# # 사이드바 또는 버튼으로 전환
+# st.sidebar.button("연습장", on_click=switch_page, args=("streamlit_app"))
+# st.sidebar.button("게임", on_click=switch_page, args=("연습장",))
 
-sidebar_1 = st.sidebar
-sidebar_1.title("사이드바 메뉴")
-sidebar_1.write("안녕")
+# # 본문 내용 조건부 렌더링
+# if st.session_state.page == "home":
+#     st.title("🏠 홈 페이지입니다")
+#     st.button("Page1으로 이동", on_click=switch_page, args=("streamlit_app",))
+# elif st.session_state.page == "page1":
+#     st.title("📄 연습장입니다")
+#     st.button("홈으로 돌아가기", on_click=switch_page, args=("연습장",))
 
-col1, col2 = st.columns(2)  # 2개의 열 생성
-with col1:
-    name = st.text_input("이름을 입력하세요.")
-    if name != "":
-        st.write(f"{name}")
-with col2:
-    age = st.number_input("나이를 입력하세요.",step=1)
-    if age > 0:
-        st.write(f"{2025-age}년에 태어남")
+# # 초기화
+# if "target" not in st.session_state:
+#     st.session_state.target = random.randint(1, 100)
+#     st.session_state.attempts = 0
 
-color = st.selectbox("좋아하는 색상",["빨강","파랑","녹색"])
-st.write(f"선택한 색상:{color}")
-if color == "빨강":
-    st.error("빨강을 좋아함")
-elif color == "파랑":
-    st.info("파랑이 좋음")
-elif color == "녹색":
-    st.success("녹색이 짱")
+st.title("🎲 숫자 맞추기 게임")
+st.write("1부터 100 사이의 숫자 중 컴퓨터가 고른 숫자를 맞춰보세요!")
 
-date = st.date_input("날짜를 입력하세요.")
-# st.write(date)
+# 사용자 입력
+guess = st.number_input("숫자를 입력하세요", min_value=1, max_value=100, step=1)
 
+# 버튼 클릭 시 확인
+if st.button("확인"):
+    st.session_state.attempts += 1
+    if guess < st.session_state.target:
+        st.warning("너무 작습니다!")
+    elif guess > st.session_state.target:
+        st.warning("너무 큽니다!")
+    else:
+        st.success(f"정답입니다! 🎉 {st.session_state.attempts}번 만에 맞췄어요!")
+        if st.button("다시 시작하기"):
+            st.session_state.target = random.randint(1, 100)
+            st.session_state.attempts = 0
 
-# image = st.camera_input("사진을 찍어보세요.")
-# if image:
-#     st.image(image)
+st.write(f"시도 횟수: {st.session_state.attempts}")
