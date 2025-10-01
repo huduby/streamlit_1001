@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title("🎈 huduby app")
+st.title("🎈It's my app")
 st.write("안녕하세요!! 오늘은 10월1일 입니다.")
 
 st.info("success")
